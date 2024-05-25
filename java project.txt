@@ -1,0 +1,171 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+class Student {
+    private String name;
+    private int id;
+
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+public class StudentManagementSystem {
+    private static ArrayList<Student> students = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        boolean running = true;
+        while (running) {
+            System.out.println("1. Add a new student");
+            System.out.println("2. Show all students");
+            System.out.println("3. Search for a student");
+            System.out.println("4. Edit a student");
+            System.out.println("5. Remove a student");
+            System.out.println("6. Remove all students");
+            System.out.println("7. Exit");
+
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    showAllStudents();
+                    break;
+                case 3:
+                    searchStudent();
+                    break;
+                case 4:
+                    editStudent();
+                    break;
+                case 5:
+                    removeStudent();
+                    break;
+                case 6:
+                    removeAllStudents();
+                    break;
+                case 7:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+        scanner.close(); // close scanner when program ends
+    }
+
+    private static void addStudent() {
+        System.out.print("Enter student name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter student ID: ");
+        int id = scanner.nextInt();
+        students.add(new Student(name, id));
+        System.out.println("Student added successfully.");
+    }
+
+    private static void showAllStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
+        System.out.println("List of all students:");
+        for (Student student : students) {
+            System.out.println("Name: " + student.getName() + ", ID: " + student.getId());
+        }
+    }
+
+    private static void searchStudent() {
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
+        System.out.print("Enter student ID to search: ");
+        int id = scanner.nextInt();
+        boolean found = false;
+        for (Student student : students) {
+            if (student.getId() == id) {
+                System.out.println("Student found:");
+                System.out.println("Name: " + student.getName() + ", ID: " + student.getId());
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Student not found.");
+        }
+    }
+
+    private static void editStudent() {
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
+        System.out.print("Enter student ID to edit: ");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        boolean found = false;
+        for (Student student : students) {
+            if (student.getId() == id) {
+                System.out.print("Enter new name for the student: ");
+                String newName = scanner.nextLine();
+                student.setName(newName);
+                System.out.println("Student information updated successfully.");
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Student not found.");
+        }
+    }
+
+    private static void removeStudent() {
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
+        System.out.print("Enter student ID to remove: ");
+        int id = scanner.nextInt();
+        Iterator<Student> iterator = students.iterator();
+        boolean found = false;
+        while (iterator.hasNext()) {
+            Student student = iterator.next();
+            if (student.getId() == id) {
+                iterator.remove();
+                System.out.println("Student removed successfully.");
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Student not found.");
+        }
+    }
+
+    private static void removeAllStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
+        students.clear();
+        System.out.println("All students removed successfully.");
+    }
+}
